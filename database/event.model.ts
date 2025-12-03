@@ -125,7 +125,8 @@ EventSchema.pre('save', async function (next) {
     });
 
     if (existingEvent) {
-      this.slug = `${this.slug}-${Date.now()}`;
+      // Use a more collision-resistant suffix
+      this.slug = `${this.slug}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     }
   }
 
