@@ -44,8 +44,7 @@ export default function RootLayout({
           />
         </div>
         <Navbar />
-        <main></main>
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   );

@@ -39,7 +39,7 @@ const BookingSchema = new Schema<IBooking>(
 BookingSchema.index({ eventId: 1 });
 
 // Pre-save hook to verify that the referenced event exists
-BookingSchema.pre('save', async function (next) {
+BookingSchema.pre('save', async function () {
   // Only validate eventId if it's new or modified
   if (this.isNew || this.isModified('eventId')) {
     // Dynamically import Event model to avoid circular dependency issues
@@ -51,8 +51,6 @@ BookingSchema.pre('save', async function (next) {
       throw new Error('Referenced event does not exist');
     }
   }
-
-  next();
 });
 
 // Use existing model if available (prevents recompilation in development)
