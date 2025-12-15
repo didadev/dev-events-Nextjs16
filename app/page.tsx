@@ -1,9 +1,26 @@
 import EventCard from "@/components/EventCard";
 import ExploreBtn from "@/components/ExploreBtn";
-import { events } from "@/lib/constants";
+import { IEvent } from "@/database";
+import { cacheLife, cacheTag } from "next/cache";
+//import { events } from "@/lib/constants";
 import React from "react";
 
-const Page = () => {
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+const Page = async () => {
+  let events = [];
+  try {
+    ("use cache");
+    cacheLife("hours");
+    const result = await fetch(`${BASE_URL}/api/events`);
+    if (result.ok) {
+      const data = await result.json();
+      events = data.events || [];
+    }
+  } catch (error) {
+    console.error("Failed to fetch events:", error);
+  }
+
   return (
     <section>
       <h1 className="text-center">
@@ -18,11 +35,13 @@ const Page = () => {
       <div className="mt-20 space-y-7">
         <h3>Featured Events</h3>
         <ul className="events">
-          {events.map((event) => (
-            <li key={event.title}>
-              <EventCard {...event} />
-            </li>
-          ))}
+          {events &&
+            events.length > 0 &&
+            events.map((event: IEvent) => (
+              <li key={event._id.toString()}>
+                <EventCard {...event} />
+              </li>
+            ))}
         </ul>
       </div>
     </section>
