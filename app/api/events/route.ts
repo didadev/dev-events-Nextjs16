@@ -40,7 +40,7 @@ export const POST = async (req: NextRequest) => {
     event.image = (uploadResult as { secure_url: string }).secure_url;
 
     const tags = JSON.parse(formData.get("tags") as string);
-    const agenda = JSON.stringify(formData.get("agenda") as string);
+    const agenda = JSON.parse(formData.get("agenda") as string);
 
     const createdEvent = await Event.create({
       ...event,

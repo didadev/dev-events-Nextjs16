@@ -1,3 +1,4 @@
+"use cache";
 import EventCard from "@/components/EventCard";
 import ExploreBtn from "@/components/ExploreBtn";
 import { IEvent } from "@/database";
@@ -10,7 +11,6 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const Page = async () => {
   let events = [];
   try {
-    ("use cache");
     cacheLife("hours");
     const result = await fetch(`${BASE_URL}/api/events`);
     if (result.ok) {
